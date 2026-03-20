@@ -50,8 +50,18 @@ export default function Solution() {
   };
 
   return (
-    <section id="solution" className="py-20 px-4">
-      <div className="max-w-6xl mx-auto">
+    <section id="solution" className="py-20 px-4 relative overflow-hidden">
+      <motion.div
+        className="absolute left-8 bottom-20 h-36 w-36 rounded-full border border-emerald-300/20"
+        animate={{ rotate: [0, -360] }}
+        transition={{ duration: 22, repeat: Infinity, ease: 'linear' }}
+      />
+      <motion.div
+        className="absolute right-0 top-20 h-44 w-44 rounded-[2rem] border border-cyan-300/20"
+        animate={{ rotate: [8, -8, 8], y: [0, 16, 0] }}
+        transition={{ duration: 8, repeat: Infinity, ease: 'easeInOut' }}
+      />
+      <div className="max-w-6xl mx-auto relative z-10">
         {/* Section Header */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}
@@ -68,6 +78,20 @@ export default function Solution() {
           <p className="text-gray-300 text-lg max-w-2xl mx-auto">
             GuardGig replaces traditional insurance with an event-driven payout system that actually works for gig workers.
           </p>
+          <div className="mt-6 flex justify-center gap-3 flex-wrap">
+            {['Auto Triggered', 'Weekly Fit', 'Fraud Safe'].map((chip, idx) => (
+              <motion.span
+                key={chip}
+                initial={{ opacity: 0, y: 10 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.35, delay: idx * 0.1 }}
+                viewport={{ once: true }}
+                className="px-3 py-1.5 rounded-full text-xs font-semibold tracking-wide bg-emerald-400/10 border border-emerald-300/25 text-emerald-100"
+              >
+                {chip}
+              </motion.span>
+            ))}
+          </div>
         </motion.div>
 
         {/* Core Features */}
@@ -84,18 +108,24 @@ export default function Solution() {
               <motion.div
                 key={idx}
                 variants={itemVariants}
-                whileHover={{ y: -10 }}
-                className="p-8 rounded-xl bg-gradient-to-br from-green-500/10 to-cyan-500/10 border border-green-500/20 backdrop-blur-sm hover:border-green-500/50 transition duration-300"
+                whileHover={{ y: -12, rotate: idx % 2 === 0 ? -1 : 1 }}
+                className="relative p-8 rounded-2xl bg-gradient-to-br from-green-500/12 to-cyan-500/12 border border-green-500/25 backdrop-blur-sm hover:border-green-500/55 transition duration-300 overflow-hidden"
               >
+                <div
+                  className="absolute inset-0 opacity-25"
+                  style={{
+                    backgroundImage: 'linear-gradient(25deg, rgba(16,185,129,0.2), transparent 45%), radial-gradient(circle at 90% 14%, rgba(56,189,248,0.3) 0 26px, transparent 28px)',
+                  }}
+                />
                 <motion.div
                   whileHover={{ rotate: 360 }}
                   transition={{ duration: 0.6 }}
-                  className="inline-block p-4 rounded-lg bg-gradient-to-br from-green-500 to-cyan-500 mb-6"
+                  className="inline-block p-4 rounded-lg bg-gradient-to-br from-green-500 to-cyan-500 mb-6 relative z-10"
                 >
                   <Icon className="text-3xl text-white" />
                 </motion.div>
-                <h3 className="text-xl font-bold text-white mb-3">{solution.title}</h3>
-                <p className="text-gray-300">{solution.description}</p>
+                <h3 className="text-xl font-bold text-white mb-3 relative z-10">{solution.title}</h3>
+                <p className="text-gray-300 relative z-10">{solution.description}</p>
               </motion.div>
             );
           })}
