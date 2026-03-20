@@ -1,22 +1,17 @@
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import { 
   Shield, 
   Zap, 
-  CloudRain, 
   Wind, 
   CheckCircle2, 
   ArrowRight, 
-  ShieldCheck,
-  Layers,
-  Cpu,
-  Database,
-  Globe,
-  Mail,
-  Smartphone,
-  HelpCircle,
-  TrendingDown,
-  Lock,
-  MessageCircle,
+  Globe, 
+  Mail, 
+  Smartphone, 
+  HelpCircle, 
+  TrendingDown, 
+  Lock, 
+  MessageCircle, 
   ArrowBigUpDash
 } from 'lucide-react';
 import { Button, Modal } from './UI';

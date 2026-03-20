@@ -1,22 +1,22 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import { 
   Shield, 
   Zap, 
   CloudRain, 
   Wind, 
-  Layers, 
-  Lock, 
-  CreditCard,
-  TrendingDown,
+  CheckCircle2, 
+  Globe, 
+  HelpCircle, 
+  TrendingDown, 
   Activity,
-  User,
-  LogOut,
-  ChevronRight,
-  HelpCircle,
   Bell,
-  Search,
   Calendar,
-  AlertCircle
+  AlertCircle,
+  CreditCard,
+  Search,
+  ChevronRight,
+  Layers,
+  LogOut
 } from 'lucide-react';
 import { Button } from './UI';
 
@@ -35,7 +35,7 @@ const Overview = ({ aqi, rain, isSimulating, onSimulateAQI, onSimulateRain }: an
           <div className="flex gap-2">
               <Button 
                 onClick={onSimulateAQI}
-                disabled={isSimulating}
+                disabled={!!isSimulating}
                 variant={aqi > 400 ? 'danger' : 'secondary'}
                 className="text-[10px] h-9 px-4 font-black uppercase tracking-widest"
               >
@@ -43,7 +43,7 @@ const Overview = ({ aqi, rain, isSimulating, onSimulateAQI, onSimulateRain }: an
               </Button>
               <Button 
                 onClick={onSimulateRain}
-                disabled={isSimulating}
+                disabled={!!isSimulating}
                 variant={rain > 20 ? 'indigo' : 'secondary'}
                 className="text-[10px] h-9 px-4 font-black uppercase tracking-widest"
               >
@@ -176,7 +176,7 @@ const Earnings = () => (
                              <span className="text-4xl font-black text-zinc-900 tracking-tight">₹2,40,000</span>
                         </div>
                         <div className="text-right">
-                             <span className="text-[10px] font-bold text-green-500 bg-green-50 px-2 py-0.5 rounded-full uppercase tracking-tighter cursor-pointer hover:bg-green-100 mb-1 inline-block">+12% vs LY</span>
+                             <span className="text-[10px] font-bold text-green-500 bg-green-50 px-2 py-0.5 rounded-full uppercase tracking-tighter mb-1 inline-block">+12% vs LY</span>
                         </div>
                     </div>
                     <div className="h-48 flex items-end gap-3 px-2">
@@ -267,12 +267,6 @@ const Payouts = ({ payouts, isSimulating }: any) => (
             </tbody>
             </table>
         </div>
-        {payouts.length === 0 && (
-            <div className="py-20 text-center">
-                <div className="w-16 h-16 bg-zinc-50 rounded-full flex items-center justify-center mx-auto mb-6 text-zinc-200"><Layers className="w-8 h-8" /></div>
-                <p className="text-sm font-bold text-zinc-400">No settlements detected yet.</p>
-            </div>
-        )}
     </section>
 );
 
@@ -311,7 +305,6 @@ const Settings = () => (
                     <p className="text-zinc-500 text-xs font-medium uppercase tracking-widest">Biometric Verification Enabled</p>
                 </div>
             </div>
-            <button className="text-xs font-black uppercase tracking-widest text-zinc-400 hover:text-white transition-colors">Manage</button>
         </div>
     </div>
 );
@@ -331,11 +324,23 @@ export const Dashboard = ({ onLogout, onHelp }: any) => {
 
   // Handle Help Navigation
   useEffect(() => {
-    if (activeTab === 'help') {
+    if (activeTab === 'help' && onHelp) {
        onHelp();
        setActiveTab('overview');
     }
   }, [activeTab, onHelp]);
+
+  const handlePayoutTrigger = useCallback((type: string) => {
+    setIsSimulating(null);
+    const newPayout = {
+        date: new Date().toLocaleDateString('en-IN', { day: 'numeric', month: 'short', year: 'numeric' }),
+        trigger: type,
+        id: `TXN_${Math.floor(Math.random() * 90000) + 10000}`,
+        amount: `₹${Math.floor(Math.random() * 500) + 700}`,
+        status: 'Settled'
+    };
+    setPayouts(prev => [newPayout, ...prev]);
+  }, []);
 
   // Simulation Logic
   useEffect(() => {
@@ -361,7 +366,6 @@ export const Dashboard = ({ onLogout, onHelp }: any) => {
           });
         }, 400);
     } else {
-      // Natural variation
       const timer = setTimeout(() => {
           setAqi(140 + Math.floor(Math.random() * 10));
           setRain(0.5 + Math.random() * 0.5);
@@ -369,19 +373,7 @@ export const Dashboard = ({ onLogout, onHelp }: any) => {
       return () => clearTimeout(timer);
     }
     return () => clearInterval(interval);
-  }, [isSimulating]);
-
-  const handlePayoutTrigger = (type: string) => {
-    setIsSimulating(null);
-    const newPayout = {
-        date: new Date().toLocaleDateString('en-IN', { day: 'numeric', month: 'short', year: 'numeric' }),
-        trigger: type,
-        id: `TXN_${Math.floor(Math.random() * 90000) + 10000}`,
-        amount: `₹${Math.floor(Math.random() * 500) + 700}`,
-        status: 'Settled'
-    };
-    setPayouts(prev => [newPayout, ...prev]);
-  };
+  }, [isSimulating, handlePayoutTrigger]);
 
   const navItems = [
     { id: 'overview', icon: <Layers className="w-4 h-4" />, label: 'Overview' },

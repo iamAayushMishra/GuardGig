@@ -1,13 +1,11 @@
 import { 
   BookOpen, 
-  HelpCircle, 
   ArrowLeft, 
   Shield, 
   Zap, 
   CloudRain, 
   Wind,
   CheckCircle2,
-  ChevronRight,
   Info
 } from 'lucide-react';
 import { Button } from './UI';

@@ -26,7 +26,7 @@ export default function App() {
   }
 
   if (view === 'dashboard') {
-    return <Dashboard onLogout={goToLanding} />;
+    return <Dashboard onLogout={goToLanding} onHelp={goToHelp} />;
   }
 
   return (
