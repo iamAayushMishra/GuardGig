@@ -1,5 +1,6 @@
 import React, { Suspense } from 'react';
 import { motion } from 'framer-motion';
+import { Analytics } from '@vercel/analytics/react';
 import './App.css';
 
 // Lazy load components
@@ -309,6 +310,7 @@ export default function App() {
           <Footer />
         </Suspense>
       </div>
+      <Analytics />
     </div>
   );
 }
